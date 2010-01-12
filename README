@@ -1,0 +1,15 @@
+This library is based of off:
+	http://code.google.com/p/gl-wes-v2/
+
+COMPILING:
+	Type 'make'.
+	
+INSTALLING:
+	Type 'make install'.
+	
+HOW TO USE:
+	Include "wes_gl.h", "wes_glu.h", "context.h", "wes_fragment.h", "wes_state.h" header
+	files into your program. Then, before you do anything OpenGL related, call the
+	function "wes_init()", passing the location of libGLESv2.so into the first parameter,
+	and the location of WES.vsh shader into the second parameter. Refer to test.c for an
+	example.
