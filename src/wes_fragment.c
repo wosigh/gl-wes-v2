@@ -31,7 +31,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 const char* frag_header = "                         \n  "
 "#define LIGHT_NUM						8           \n  "
 "#define CLIPPLANE_NUM					6           \n  "
-"#define MULTITEX_NUM					4           \n  "
+"#define MULTITEX_NUM					3           \n  "
 "#define FACE_NUM						2           \n  "
 "                                                   \n  "
 "uniform sampler2D	    uTexUnit[MULTITEX_NUM];     \n  "

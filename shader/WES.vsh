@@ -20,7 +20,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define LIGHT_NUM						8
 #define CLIPPLANE_NUM					6
-#define MULTITEX_NUM					4
+#define MULTITEX_NUM					3
 #define FACE_NUM						2
 
 #define FACE_FRONT						0
@@ -76,7 +76,6 @@ attribute highp vec4 	aPosition;
 attribute mediump vec4 	aTexCoord0;
 attribute mediump vec4 	aTexCoord1;
 attribute mediump vec4 	aTexCoord2;
-attribute mediump vec4 	aTexCoord3;
 attribute highp vec3 	aNormal;
 attribute highp float 	aFogCoord;
 attribute lowp vec4 	aColor;
@@ -314,7 +313,6 @@ void main(){
 	vTexCoord[0] = aTexCoord0;
 	vTexCoord[1] = aTexCoord1;
 	vTexCoord[2] = aTexCoord2;
-	vTexCoord[3] = aTexCoord3;
 	for(int i = 0; i < MULTITEX_NUM; i++){
 		if (any(uEnableTextureGen[i])){
 			ComputeTexGen(i);

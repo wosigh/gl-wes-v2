@@ -37,8 +37,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #define WES_ATEXCOORD0                      5
 #define WES_ATEXCOORD1                      6
 #define WES_ATEXCOORD2                      7
-#define WES_ATEXCOORD3                      8
-#define WES_ANUM                            9
+#define WES_ANUM                            8
 
 /*  shader defines       */
 #define WES_ALPHA_NEVER                     1

@@ -29,7 +29,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define WES_LIGHT_NUM           8
 #define WES_CLIPPLANE_NUM       6
-#define WES_MULTITEX_NUM        4
+#define WES_MULTITEX_NUM        3
 #define WES_FACE_NUM            2
 
 //WES2 Defines:
