@@ -36,7 +36,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <GL/gl.h>
+#include "wes_gl.h"
+#include "wes_glu.h"
+#include "wes_fragment.h"
+#include "wes_state.h"
 #include "SDL.h"
 
 #ifndef M_PI
@@ -46,6 +49,14 @@
 static GLint T0 = 0;
 static GLint Frames = 0;
 
+static GLfloat pos[4] =
+{5.0, 5.0, 10.0, 0.0};
+static GLfloat red[4] =
+{0.8, 0.1, 0.0, 1.0};
+static GLfloat green[4] =
+{0.0, 0.8, 0.2, 1.0};
+static GLfloat blue[4] =
+{0.2, 0.2, 1.0, 1.0};
 
 /**
 
@@ -195,19 +206,25 @@ draw(void)
   glPushMatrix();
   glTranslatef(-3.0, -2.0, 0.0);
   glRotatef(angle, 0.0, 0.0, 1.0);
-  glCallList(gear1);
+  //glCallList(gear1);
+  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, red);
+  gear(1.0, 4.0, 1.0, 20, 0.7);
   glPopMatrix();
 
   glPushMatrix();
   glTranslatef(3.1, -2.0, 0.0);
   glRotatef(-2.0 * angle - 9.0, 0.0, 0.0, 1.0);
-  glCallList(gear2);
+  //glCallList(gear2);
+  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, green);
+  gear(0.5, 2.0, 2.0, 10, 0.7);
   glPopMatrix();
 
   glPushMatrix();
   glTranslatef(-3.1, 4.2, 0.0);
   glRotatef(-2.0 * angle - 25.0, 0.0, 0.0, 1.0);
-  glCallList(gear3);
+  //glCallList(gear3);
+  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, blue);
+  gear(1.3, 2.0, 0.5, 10, 0.7);
   glPopMatrix();
 
   glPopMatrix();
@@ -243,7 +260,7 @@ reshape(int width, int height)
   glViewport(0, 0, (GLint) width, (GLint) height);
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  glFrustum(-1.0, 1.0, -h, h, 5.0, 60.0);
+  glFrustrum(-1.0, 1.0, -h, h, 5.0, 60.0);
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
   glTranslatef(0.0, 0.0, -40.0);
@@ -252,14 +269,6 @@ reshape(int width, int height)
 static void
 init(int argc, char *argv[])
 {
-  static GLfloat pos[4] =
-  {5.0, 5.0, 10.0, 0.0};
-  static GLfloat red[4] =
-  {0.8, 0.1, 0.0, 1.0};
-  static GLfloat green[4] =
-  {0.0, 0.8, 0.2, 1.0};
-  static GLfloat blue[4] =
-  {0.2, 0.2, 1.0, 1.0};
 
   glLightfv(GL_LIGHT0, GL_POSITION, pos);
   glEnable(GL_CULL_FACE);
@@ -268,23 +277,24 @@ init(int argc, char *argv[])
   glEnable(GL_DEPTH_TEST);
 
   /* make the gears */
-  gear1 = glGenLists(1);
-  glNewList(gear1, GL_COMPILE);
-  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, red);
-  gear(1.0, 4.0, 1.0, 20, 0.7);
-  glEndList();
+  //wesGL doesn't support display lists.
+  //gear1 = glGenLists(1);
+  //glNewList(gear1, GL_COMPILE);
+  //glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, red);
+  //gear(1.0, 4.0, 1.0, 20, 0.7);
+  //glEndList();
 
-  gear2 = glGenLists(1);
-  glNewList(gear2, GL_COMPILE);
-  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, green);
-  gear(0.5, 2.0, 2.0, 10, 0.7);
-  glEndList();
+  //gear2 = glGenLists(1);
+  //glNewList(gear2, GL_COMPILE);
+  //glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, green);
+  //gear(0.5, 2.0, 2.0, 10, 0.7);
+  //glEndList();
 
-  gear3 = glGenLists(1);
-  glNewList(gear3, GL_COMPILE);
-  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, blue);
-  gear(1.3, 2.0, 0.5, 10, 0.7);
-  glEndList();
+  //gear3 = glGenLists(1);
+  //glNewList(gear3, GL_COMPILE);
+  //glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, blue);
+  //gear(1.3, 2.0, 0.5, 10, 0.7);
+  //glEndList();
 
   glEnable(GL_NORMALIZE);
 
@@ -310,6 +320,7 @@ int main(int argc, char *argv[])
     SDL_Quit();
     exit(2);
   }
+  wes_init("/usr/lib/libGLESv2.so", "/usr/include/wesGL/WES.vsh");
   SDL_WM_SetCaption("Gears", "gears");
 
   init(argc, argv);
