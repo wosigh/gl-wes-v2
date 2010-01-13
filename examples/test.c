@@ -491,7 +491,6 @@ int main( int argc, char **argv )
             freopen("stderr.txt", "w", stderr );
         }
     }
-    printf("Context OPen");
 
     wes_init("/usr/lib/libGLESv2.so", "/usr/include/wesGL/WES.vsh");
 

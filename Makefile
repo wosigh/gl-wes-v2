@@ -27,6 +27,7 @@ $(BUILDDIR)/%.o:	$(SRC)/%.c
 	
 test: makedirs $(EXDIR)/test.c
 	$(CC) $(CC_FLAGS) -I/usr/local/include/SDL -lwesGL -L/usr/local/lib -Wl,-rpath,/usr/local/lib -lSDL -lpthread -o $(BUILDDIR)/examples/test $(EXDIR)/test.c
+	$(CC) $(CC_FLAGS) -I/usr/local/include/SDL -lwesGL -L/usr/local/lib -Wl,-rpath,/usr/local/lib -lSDL -lpthread -o $(BUILDDIR)/examples/SDLgears $(EXDIR)/SDLgears.c
 	cp -r $(EXDIR)/data $(BUILDDIR)/examples/.
 	
 install:
