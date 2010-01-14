@@ -112,8 +112,8 @@ wes_uniform_loc(program_t *p)
 #define LocateUniform(A)                                                \
     p->uloc.A = wes_gl->glGetUniformLocation(p->prog, #A);
 #define LocateUniformIndex(A, B, I)                                    \
-    sprintf(str, #A "[%i]" #B, I);                                     \
-    p->uloc.A[I]B = wes_gl->glGetUniformLocation(p->prog, str);
+    sprintf(str, #A #B "[%i]", I);                                     \
+    p->uloc.A ## B[I] = wes_gl->glGetUniformLocation(p->prog, str);
 
     int i;
     char str[256];
@@ -130,15 +130,16 @@ wes_uniform_loc(program_t *p)
     LocateUniform(uEnableFog);
     LocateUniform(uEnableFogCoord);
     LocateUniform(uEnableLighting);
+	LocateUniform(uEnableColorMaterial);
     for(i = 0; i != WES_LIGHT_NUM; i++){
         LocateUniformIndex(uEnableLight, , i);
-        LocateUniformIndex(uLight, .Position, i);
-        LocateUniformIndex(uLight, .Attenuation, i);
-        LocateUniformIndex(uLight, .ColorAmbient, i);
-        LocateUniformIndex(uLight, .ColorDiffuse, i);
-        LocateUniformIndex(uLight, .ColorSpec, i);
-        LocateUniformIndex(uLight, .SpotDir, i);
-        LocateUniformIndex(uLight, .SpotVar, i);
+        LocateUniformIndex(uLight, Position, i);
+        LocateUniformIndex(uLight, Attenuation, i);
+        LocateUniformIndex(uLight, ColorAmbient, i);
+        LocateUniformIndex(uLight, ColorDiffuse, i);
+        LocateUniformIndex(uLight, ColorSpec, i);
+        LocateUniformIndex(uLight, SpotDir, i);
+        LocateUniformIndex(uLight, SpotVar, i);
     }
 
     LocateUniform(uLightModel.ColorAmbient);
@@ -148,12 +149,12 @@ wes_uniform_loc(program_t *p)
     LocateUniform(uRescaleFactor);
 
     for(i = 0; i < 2; i++){
-        LocateUniformIndex(uMaterial, .ColorAmbient, i);
-        LocateUniformIndex(uMaterial, .ColorDiffuse, i);
-        LocateUniformIndex(uMaterial, .ColorSpec, i);
-        LocateUniformIndex(uMaterial, .ColorEmissive, i);
-        LocateUniformIndex(uMaterial, .SpecExponent, i);
-        LocateUniformIndex(uMaterial, .ColorMaterial, i);
+        LocateUniformIndex(uMaterial, ColorAmbient, i);
+        LocateUniformIndex(uMaterial, ColorDiffuse, i);
+        LocateUniformIndex(uMaterial, ColorSpec, i);
+        LocateUniformIndex(uMaterial, ColorEmissive, i);
+        LocateUniformIndex(uMaterial, SpecExponent, i);
+        LocateUniformIndex(uMaterial, ColorMaterial, i);
     }
 
     LocateUniform(uFogMode);

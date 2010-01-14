@@ -105,17 +105,32 @@ struct uniformloc_s
     GLint  uEnableAlphaTest;
     GLint  uEnableFogCoord;
 
-    struct {
+    /*struct {
         GLint  Position, ColorAmbient, ColorDiffuse, ColorSpec;
         GLint  Attenuation, SpotDir;
         GLint  SpotVar;
-    } uLight[WES_LIGHT_NUM];
+    } uLight[WES_LIGHT_NUM];*/
 
-    struct {
+	GLint uLightPosition[WES_LIGHT_NUM];
+	GLint uLightColorAmbient[WES_LIGHT_NUM];
+	GLint uLightColorDiffuse[WES_LIGHT_NUM];
+	GLint uLightColorSpec[WES_LIGHT_NUM];
+	GLint uLightAttenuation[WES_LIGHT_NUM];
+	GLint uLightSpotDir[WES_LIGHT_NUM];
+	GLint uLightSpotVar[WES_LIGHT_NUM];
+
+    /*struct {
         GLint      ColorMaterial;
         GLint      ColorAmbient, ColorDiffuse, ColorSpec, ColorEmissive;
         GLint   	SpecExponent;
-    } uMaterial[WES_FACE_NUM];
+    } uMaterial[WES_FACE_NUM];*/
+
+	GLint uMaterialColorMaterial[WES_LIGHT_NUM];
+	GLint uMaterialColorAmbient[WES_LIGHT_NUM];
+	GLint uMaterialColorDiffuse[WES_LIGHT_NUM];
+	GLint uMaterialColorSpec[WES_LIGHT_NUM];
+	GLint uMaterialColorEmissive[WES_LIGHT_NUM];
+	GLint uMaterialSpecExponent[WES_LIGHT_NUM];
 
     struct {
     	GLint  ColorAmbient;

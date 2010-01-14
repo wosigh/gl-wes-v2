@@ -79,6 +79,55 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
         u_uniform.A.mod = GL_FALSE;                                   \
         wes_gl->glUniform4fv(sh_program->uloc.A, 1, u_uniform.A.v);   \
     };
+#define UpdateUniformArray1i(A, B, I)                                          \
+    if (u_uniform.A[I].B.mod || sh_program_mod) {                                            \
+        PRINT_ERROR(#A" = %i \n", u_uniform.A[I].B.i);                       \
+        u_uniform.A[I].B.mod = GL_FALSE;                                   \
+        wes_gl->glUniform1i(sh_program->uloc.A ## B[I], u_uniform.A[I].B.i);            \
+    };
+
+#define UpdateUniformArray2i(A, B, I)                                          \
+    if (u_uniform.A[I].B.mod || sh_program_mod) {                                            \
+        PRINT_ERROR(#A" = %i, %i \n", u_uniform.A[I].B.v[0], u_uniform.A[I].B.v[1]);  \
+        u_uniform.A[I].B.mod = GL_FALSE;                                   \
+        wes_gl->glUniform2iv(sh_program->uloc.A ## B[I], 1, u_uniform.A[I].B.v);        \
+    };
+#define UpdateUniformArray3i(A, B, I)                                          \
+    if (u_uniform.A[I].B.mod || sh_program_mod) {                                            \
+        PRINT_ERROR(#A"  = %i, %i, %i \n", u_uniform.A[I].B.v[0], u_uniform.A[I].B.v[1], u_uniform.A[I].B.v[2]);  \
+        u_uniform.A[I].B.mod = GL_FALSE;                                   \
+        wes_gl->glUniform3iv(sh_program->uloc.A ## B[I], 1, u_uniform.A[I].B.v);        \
+    };
+#define UpdateUniformArray4i(A, B, I)                                          \
+    if (u_uniform.A[I].B.mod || sh_program_mod) {                                            \
+        PRINT_ERROR(#A" = %i, %i, %i, %i \n", u_uniform.A[I].B.v[0], u_uniform.A[I].B.v[1], u_uniform.A[I].B.v[2], u_uniform.A[I].B.v[3]);  \
+        u_uniform.A[I].B.mod = GL_FALSE;                                   \
+        wes_gl->glUniform4iv(sh_program->uloc.A ## B[I], 1, u_uniform.A[I].B.v);        \
+    };
+#define UpdateUniformArray1f(A, B, I)                                          \
+    if (u_uniform.A[I].B.mod || sh_program_mod) {                                            \
+        PRINT_ERROR(#A" = %f \n", u_uniform.A[I].B.f);                       \
+        u_uniform.A[I].B.mod = GL_FALSE;                                   \
+        wes_gl->glUniform1f(sh_program->uloc.A ## B[I], u_uniform.A[I].B.f);            \
+    };
+#define UpdateUniformArray2f(A, B, I)                                          \
+    if (u_uniform.A[I].B.mod || sh_program_mod) {                                            \
+        PRINT_ERROR(#A" = %f, %f \n", u_uniform.A[I].B.v[0],  u_uniform.A[I].B.v[1]);                       \
+        u_uniform.A[I].B.mod = GL_FALSE;                                   \
+        wes_gl->glUniform2fv(sh_program->uloc.A ## B[I], 1, u_uniform.A[I].B.v);        \
+    };
+#define UpdateUniformArray3f(A, B, I)                                          \
+    if (u_uniform.A[I].B.mod || sh_program_mod) {                          \
+        PRINT_ERROR(#A"= %f, %f, %f \n", u_uniform.A[I].B.v[0],  u_uniform.A[I].B.v[1], u_uniform.A[I].B.v[2]);                       \
+        u_uniform.A[I].B.mod = GL_FALSE;                                   \
+        wes_gl->glUniform3fv(sh_program->uloc.A ## B[I], 1, u_uniform.A[I].B.v);   \
+    };
+#define UpdateUniformArray4f(A, B, I)                                          \
+    if (u_uniform.A[I].B.mod || sh_program_mod) {                          \
+        PRINT_ERROR(#A" = %f, %f, %f, %f \n", u_uniform.A[I].B.v[0],  u_uniform.A[I].B.v[1], u_uniform.A[I].B.v[2], u_uniform.A[I].B.v[3]);                       \
+        u_uniform.A[I].B.mod = GL_FALSE;                                   \
+        wes_gl->glUniform4fv(sh_program->uloc.A ## B[I], 1, u_uniform.A[I].B.v);   \
+    };
 #else
 #define UpdateUniform1i(A)                                          \
     if (u_uniform.A.mod || sh_program_mod) {                                            \
@@ -119,6 +168,46 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
     if (u_uniform.A.mod || sh_program_mod) {                          \
         u_uniform.A.mod = GL_FALSE;                                   \
         wes_gl->glUniform4fv(sh_program->uloc.A, 1, u_uniform.A.v);   \
+    };
+#define UpdateUniformArray1i(A, B, I)                                          \
+    if (u_uniform.A[I].B.mod || sh_program_mod) {                                            \
+        u_uniform.A[I].B.mod = GL_FALSE;                                   \
+        wes_gl->glUniform1i(sh_program->uloc.A ## B[I], u_uniform.A[I].B.i);            \
+    };
+#define UpdateUniformArray2i(A, B, I)                                          \
+    if (u_uniform.A[I].B.mod || sh_program_mod) {                                            \
+        u_uniform.A[I].B.mod = GL_FALSE;                                   \
+        wes_gl->glUniform2iv(sh_program->uloc.A ## B[I], 1, u_uniform.A[I].B.v);        \
+    };
+#define UpdateUniformArray3i(A, B, I)                                          \
+    if (u_uniform.A[I].B.mod || sh_program_mod) {                                            \
+        u_uniform.A[I].B.mod = GL_FALSE;                                   \
+        wes_gl->glUniform3iv(sh_program->uloc.A ## B[I], 1, u_uniform.A[I].B.v);        \
+    };
+#define UpdateUniformArray4i(A, B, I)                                          \
+    if (u_uniform.A[I].B.mod || sh_program_mod) {                                            \
+        u_uniform.A[I].B.mod = GL_FALSE;                                   \
+        wes_gl->glUniform4iv(sh_program->uloc.A ## B[I], 1, u_uniform.A[I].B.v);        \
+    };
+#define UpdateUniformArray1f(A, B, I)                                          \
+    if (u_uniform.A[I].B.mod || sh_program_mod) {                                            \
+        u_uniform.A[I].B.mod = GL_FALSE;                                   \
+        wes_gl->glUniform1f(sh_program->uloc.A ## B[I], u_uniform.A[I].B.f);            \
+    };
+#define UpdateUniformArray2f(A, B, I)                                          \
+    if (u_uniform.A[I].B.mod || sh_program_mod) {                                            \
+        u_uniform.A[I].B.mod = GL_FALSE;                                   \
+        wes_gl->glUniform2fv(sh_program->uloc.A ## B[I], 1, u_uniform.A[I].B.v);        \
+    };
+#define UpdateUniformArray3f(A, B, I)                                          \
+    if (u_uniform.A[I].B.mod || sh_program_mod) {                          \
+        u_uniform.A[I].B.mod = GL_FALSE;                                   \
+        wes_gl->glUniform3fv(sh_program->uloc.A ## B[I], 1, u_uniform.A[I].B.v);   \
+    };
+#define UpdateUniformArray4f(A, B, I)                                          \
+    if (u_uniform.A[I].B.mod || sh_program_mod) {                          \
+        u_uniform.A[I].B.mod = GL_FALSE;                                   \
+        wes_gl->glUniform4fv(sh_program->uloc.A ## B[I], 1, u_uniform.A[I].B.v);   \
     };
 #endif
 
@@ -192,13 +281,13 @@ wes_state_update()
 
     for(i = 0; i != WES_LIGHT_NUM; i++){
         UpdateUniform1i(uEnableLight[i]);
-        UpdateUniform4f(uLight[i].Position);
-        UpdateUniform3f(uLight[i].Attenuation);
-        UpdateUniform4f(uLight[i].ColorAmbient);
-        UpdateUniform4f(uLight[i].ColorDiffuse);
-        UpdateUniform4f(uLight[i].ColorSpec);
-        UpdateUniform3f(uLight[i].SpotDir);
-        UpdateUniform2f(uLight[i].SpotVar);
+        UpdateUniformArray4f(uLight, Position, i);
+        UpdateUniformArray3f(uLight, Attenuation, i);
+        UpdateUniformArray4f(uLight, ColorAmbient, i);
+        UpdateUniformArray4f(uLight, ColorDiffuse, i);
+        UpdateUniformArray4f(uLight, ColorSpec, i);
+        UpdateUniformArray3f(uLight, SpotDir, i);
+        UpdateUniformArray2f(uLight, SpotVar, i);
     }
     for(i = 0; i < WES_MULTITEX_NUM; i++){
         UpdateUniform4i(uEnableTextureGen[i]);
@@ -208,12 +297,12 @@ wes_state_update()
     UpdateUniform1f(uRescaleFactor);
 
     for(i = 0; i != WES_FACE_NUM; i++){
-        UpdateUniform1i(uMaterial[i].ColorMaterial);
-        UpdateUniform4f(uMaterial[i].ColorAmbient);
-        UpdateUniform4f(uMaterial[i].ColorDiffuse);
-        UpdateUniform4f(uMaterial[i].ColorSpec);
-        UpdateUniform4f(uMaterial[i].ColorEmissive);
-        UpdateUniform1f(uMaterial[i].SpecExponent);
+        UpdateUniformArray1i(uMaterial, ColorMaterial, i);
+        UpdateUniformArray4f(uMaterial, ColorAmbient, i);
+        UpdateUniformArray4f(uMaterial, ColorDiffuse, i);
+        UpdateUniformArray4f(uMaterial, ColorSpec, i);
+        UpdateUniformArray4f(uMaterial, ColorEmissive, i);
+        UpdateUniformArray1f(uMaterial, SpecExponent, i);
     }
     UpdateUniform4f(uLightModel.ColorAmbient);
     UpdateUniform1i(uLightModel.TwoSided);

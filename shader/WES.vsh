@@ -50,7 +50,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #define GEN_SPHEREMAP					3
 #define GEN_REFLECTMAP					4
 
-struct sLight {
+/*struct sLight {
 	highp vec4 	Position;
 	lowp vec4 	ColorAmbient, ColorDiffuse, ColorSpec;
 	highp vec3 	Attenuation; 	// Constant, Linear & Quadratic factors
@@ -62,7 +62,7 @@ struct sMaterial {
 	int 		ColorMaterial;
 	lowp vec4 	ColorAmbient, ColorDiffuse, ColorSpec, ColorEmissive;
 	float 		SpecExponent;
-};
+};*/
 
 struct sLightModel {
 	lowp vec4 	ColorAmbient;
@@ -101,11 +101,24 @@ uniform mat4			uTexGenMat[MULTITEX_NUM];
 uniform	bool			uEnableLighting;
 uniform	bool			uEnableLight[LIGHT_NUM];
 uniform	bool			uEnableColorMaterial;
-uniform sLight			uLight[LIGHT_NUM];
+// uLight
+uniform highp vec4 		uLightPosition[LIGHT_NUM];
+uniform lowp vec4 		uLightColorAmbient[LIGHT_NUM];
+uniform lowp vec4 		uLightColorDiffuse[LIGHT_NUM];
+uniform lowp vec4 		uLightColorSpec[LIGHT_NUM];
+uniform highp vec3 		uLightAttenuation[LIGHT_NUM]; 
+uniform highp vec3		uLightSpotDir[LIGHT_NUM];
+uniform highp vec2 		uLightSpotVar[LIGHT_NUM];
 uniform sLightModel		uLightModel;
-uniform sMaterial		uMaterial[FACE_NUM];
-uniform float 			uRescaleFactor;
+// uMaterial
+uniform int 			uMaterialColorMaterial[FACE_NUM];
+uniform lowp vec4 		uMaterialColorAmbient[FACE_NUM];
+uniform lowp vec4 		uMaterialColorDiffuse[FACE_NUM];
+uniform lowp vec4 		uMaterialColorSpec[FACE_NUM];
+uniform lowp vec4 		uMaterialColorEmissive[FACE_NUM];
+uniform float 			uMaterialSpecExponent[FACE_NUM];
 
+uniform float 			uRescaleFactor;
 uniform	bool			uEnableClipPlane[CLIPPLANE_NUM];
 uniform highp vec4 		uClipPlane[CLIPPLANE_NUM];
 
@@ -196,41 +209,41 @@ vec4 ComputeLightFrom(int i){
 	float 	att;
 	float 	ndoth, ndotl;
 	
-	dpos = uLight[i].Position.xyz;
+	dpos = uLightPosition[i].xyz;
 	att = 1.0;	
 
-	if (uLight[i].Position.w != 0.0){
+	if (uLightPosition[i].w != 0.0){
 		dpos -= lEye.xyz;
 		
-		if (uLight[i].Attenuation.x != 1.0 || uLight[i].Attenuation.y != 0.0 ||
-			uLight[i].Attenuation.z != 0.0){
+		if (uLightAttenuation[i].x != 1.0 || uLightAttenuation[i].y != 0.0 ||
+			uLightAttenuation[i].z != 0.0){
 			dist2 = dot(dpos, dpos);
 			dist = sqrt(dist2);
-			att = 1.0 / dot(uLight[i].Attenuation, vec3(1.0, dist, dist2));
+			att = 1.0 / dot(uLightAttenuation[i], vec3(1.0, dist, dist2));
 		}
 		
 		dpos = normalize(dpos);
-		if(uLight[i].SpotVar.y < 180.0){
-			spot = dot(-dpos, uLight[i].SpotDir);
-			if(spot >= cos(radians(uLight[i].SpotVar.y))){
-				att *= pow(spot, uLight[i].SpotVar.x);
+		if(uLightSpotVar[i].y < 180.0){
+			spot = dot(-dpos, uLightSpotDir[i]);
+			if(spot >= cos(radians(uLightSpotVar[i].y))){
+				att *= pow(spot, uLightSpotVar[i].x);
 			} else {
 				return vec4(0,0,0,0);
 			}
 		}
 	}
 	
-	col = (uLight[i].ColorAmbient * lMaterialAmbient);
+	col = (uLightColorAmbient[i] * lMaterialAmbient);
 	ndotl = dot(lNormal, dpos);
 	if (ndotl > 0.0){
-		col += ndotl * (uLight[i].ColorDiffuse * lMaterialDiffuse);
+		col += ndotl * (uLightColorDiffuse[i] * lMaterialDiffuse);
 	}
 	
 	dpos.z += 1.0;
 	dpos = normalize(dpos);
 	ndoth = dot(lNormal, dpos);
 	if (ndoth > 0.0){ 
-		col += pow(ndoth, lMaterialSpecExponent) * (lMaterialSpecular * uLight[i].ColorSpec);
+		col += pow(ndoth, lMaterialSpecExponent) * (lMaterialSpecular * uLightColorSpec[i]);
 	}
 	
 	return att * col;
@@ -251,20 +264,20 @@ void ComputeLighting(){
 	}
 		
 	/* Determine which materials are to be used	*/
-	lMaterialAmbient = uMaterial[lFace].ColorAmbient;
-	lMaterialDiffuse = uMaterial[lFace].ColorDiffuse;
-	lMaterialSpecular = uMaterial[lFace].ColorSpec;
-	lMaterialEmissive = uMaterial[lFace].ColorEmissive;
-	lMaterialSpecExponent = uMaterial[lFace].SpecExponent;
+	lMaterialAmbient = uMaterialColorAmbient[lFace];
+	lMaterialDiffuse = uMaterialColorDiffuse[lFace];
+	lMaterialSpecular = uMaterialColorSpec[lFace];
+	lMaterialEmissive = uMaterialColorEmissive[lFace];
+	lMaterialSpecExponent = uMaterialSpecExponent[lFace];
 	if (uEnableColorMaterial){
-		if (uMaterial[lFace].ColorMaterial == COLORMAT_AMBIENT){
+		if (uMaterialColorMaterial[lFace] == COLORMAT_AMBIENT){
 			lMaterialAmbient = aColor;
-		} else if (uMaterial[lFace].ColorMaterial == COLORMAT_DIFFUSE){
+		} else if (uMaterialColorMaterial[lFace] == COLORMAT_DIFFUSE){
 			lMaterialDiffuse = aColor;
-		} else if (uMaterial[lFace].ColorMaterial == COLORMAT_AMBIENT_AND_DIFFUSE){
+		} else if (uMaterialColorMaterial[lFace] == COLORMAT_AMBIENT_AND_DIFFUSE){
 			lMaterialAmbient = aColor;
 			lMaterialDiffuse = aColor;
-		} else if (uMaterial[lFace].ColorMaterial == COLORMAT_SPECULAR){
+		} else if (uMaterialColorMaterial[lFace] == COLORMAT_SPECULAR){
 			lMaterialSpecular = aColor;
 		} else {
 			lMaterialEmissive =  aColor;
